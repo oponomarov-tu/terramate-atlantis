@@ -1,0 +1,17 @@
+repos:
+  - id: /.*/
+    branch: /^(main|develop|master)$/
+    workflow: custom
+    apply_requirements: [approved, undiverged]
+    allowed_overrides: [apply_requirements, workflow]
+    allow_custom_workflows: true
+    pre_workflow_hooks:
+      - run: terramate generate
+        description: generating tf code
+workflows:
+  custom:
+    plan:
+      steps:
+        - init:
+            extra_args: ["-upgrade=false -input=false -no-color"]
+        - plan
